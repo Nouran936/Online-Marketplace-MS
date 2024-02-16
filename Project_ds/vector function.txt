@@ -1,0 +1,65 @@
+#include "Product.h"
+#include <string.h>
+#include <iostream>
+#include <vector>
+#include<fstream>
+#include <sstream>
+using namespace std;
+
+#define TEXT_FIE_PATH "products/id.txt"
+enum class Options {Add = 1, View = 2};
+
+void addToTextFile(string text, string filePath) {
+	ofstream myfile;
+	myfile.open(filePath, ios::out | ios::app);
+	myfile << text + "\n";
+	myfile.close();
+	cout << "Record is added to file" << endl;
+}
+
+vector<string>readFromTextFile(string filePath) {
+	vector<string>fileLines;
+	ifstream myfile(filePath);
+	string line;
+	if (myfile.is_open()) {
+		while (getline(myfile, line)) {
+			fileLines.push_back(myfile);
+
+		}
+	}
+	else {
+		cout << "Unable to open file";
+	}
+
+	return fileLines;
+}
+
+
+int main() {
+	string text;
+	int options;
+	while (true) {
+		cout << "1- Add new product" << endl;
+		cout << "2- View products" << endl;
+		cout << "1- Any other key to exit" << endl;
+		cin >> options;
+		if (options == (int)Options::Add) {
+			getline(cin, text);
+			addToTextFile(text, TEXT_FIE_PATH);
+		}
+		else if (options == (int)Options::View) {
+			cout << "File Content: " << endl;
+			vector<string>fileLines = readFromTextFile(TEXT_FIE_PATH);
+			for (auto line = fileLines.begin(); line != fileLines.end(); line++) {
+				cout << *line << endl;
+			}
+		}
+		else {
+			break;
+		}
+	}
+
+
+
+		return 0;
+	}
